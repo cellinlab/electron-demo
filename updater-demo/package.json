@@ -10,6 +10,7 @@
   },
   "build": {
     "appId": "com.updater.demo",
+    "asar": false,
     "productName": "UpdaterDemo",
     "directories": {
       "output": "dist"

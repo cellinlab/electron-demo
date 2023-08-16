@@ -13,6 +13,17 @@
     "productName": "UpdaterDemo",
     "directories": {
       "output": "dist"
+    },
+    "win": {
+      "requestedExecutionLevel": "highestAvailable",
+      "target": ["nsis"]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": false,
+      "deleteAppDataOnUninstall": true,
+      "createDesktopShortcut": "always",
+      "createStartMenuShortcut": true
     }
   },
   "keywords": [],

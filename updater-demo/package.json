@@ -24,7 +24,13 @@
       "deleteAppDataOnUninstall": true,
       "createDesktopShortcut": "always",
       "createStartMenuShortcut": true
-    }
+    },
+    "publish": [
+      {
+        "provider": "generic",
+        "url": ""
+      }
+    ]
   },
   "keywords": [],
   "author": "",

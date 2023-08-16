@@ -5,7 +5,7 @@ const path = require('path')
 
 const app = new Koa()
 
-app.use(static(path.join(__dirname, './static')))
+app.use(static(path.join(__dirname, './dist')))
 
 app.listen(3000, () => {
   console.log('server is running at http://localhost:3000')

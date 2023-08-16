@@ -46,6 +46,10 @@ app.whenReady().then(() => {
 
   win.loadFile('./src/index.html')
 
+  // open devtools
+  // win.webContents.openDevTools()
+
   // check update
   checkUpdate()
 })
+

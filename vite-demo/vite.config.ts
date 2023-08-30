@@ -2,7 +2,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import optimizer from 'vite-plugin-optimizer'
 
-import { devPlugin, getReplacer } from './plugins/devPlugin'
+import { devPlugin, getReplacer, buildPlugin } from './plugins/devPlugin'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -11,4 +11,11 @@ export default defineConfig({
     devPlugin(),
     react()
   ],
+  build: {
+    rollupOptions: {
+      plugins: [
+        buildPlugin()
+      ]
+    }
+  }
 })

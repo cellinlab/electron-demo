@@ -1,7 +1,7 @@
 const { app, BrowserWindow, dialog, globalShortcut } = require('electron')
 const { autoUpdater } = require('electron-updater')
 const request = require('request');
-const fs = require('fs');
+const fs = require('fs-extra');
 const path = require('path');
 const tar = require('tar');
 
@@ -50,7 +50,7 @@ const download = (url, dest) => {
     request(encodeURI(url), {
         auth: {
             user: '',
-            password: ''
+            password: 'x'
         }
     })
         .pipe(file)
@@ -64,11 +64,32 @@ const download = (url, dest) => {
             //     }
             //     console.log('unzip success')
             // })
+            const outputPath = path.join(app.getAppPath(), 'upgrade')
+            fs.mkdirSync(outputPath, { recursive: true })
             tar.extract({
               file: path.join(app.getAppPath(), 'app','test.tar.gz'),
-              cwd: path.join(app.getAppPath(), 'upgrade')
+              cwd: outputPath
             }).then(res => {
               console.log('unzip success')
+
+              // 拷贝解压文件覆盖原文件
+              const sourcePath = path.join(outputPath)
+              const targetPath = path.join(app.getAppPath(), 'app')
+              fs.copySync(sourcePath, targetPath)
+
+              fs.removeSync(outputPath)
+              console.log('copy success')
+              dialog.showMessageBox({
+                type: 'info',
+                title: '已更新，重启生效',
+                message: '部分更新需要重启应用，是否重启？',
+                buttons: ['Yes', 'No']
+              }).then(({ response }) => {
+                if (response === 0) {
+                  app.relaunch()
+                  app.exit()
+                }
+              })
             })
         });
 }
@@ -86,7 +107,7 @@ app.whenReady().then(() => {
 
   globalShortcut.unregister('ctrl+shift+u');
   globalShortcut.register('ctrl+shift+u', () => {
-    download('', path.join(app.getAppPath(), 'app','test.tar.gz'))
+    download('x.tar.gz', path.join(app.getAppPath(), 'app','test.tar.gz'))
   });
 })
 

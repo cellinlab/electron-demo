@@ -1,6 +1,6 @@
 {
   "name": "updater-demo",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -44,6 +44,8 @@
     "nodemon": "^3.0.1"
   },
   "dependencies": {
-    "electron-updater": "4.6"
+    "electron-updater": "4.6",
+    "request": "^2.88.2",
+    "tar": "^6.2.0"
   }
 }

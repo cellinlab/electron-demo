@@ -1,5 +1,9 @@
-const { app, BrowserWindow, dialog } = require('electron')
+const { app, BrowserWindow, dialog, globalShortcut } = require('electron')
 const { autoUpdater } = require('electron-updater')
+const request = require('request');
+const fs = require('fs');
+const path = require('path');
+const tar = require('tar');
 
 function checkUpdate() {
   if (process.platform === 'darwin') {
@@ -41,6 +45,34 @@ function checkUpdate() {
   })
 }
 
+const download = (url, dest) => {
+    const file = fs.createWriteStream(dest);
+    request(encodeURI(url), {
+        auth: {
+            user: '',
+            password: ''
+        }
+    })
+        .pipe(file)
+        .on('close', () => {
+            console.log('downloaded success')
+
+            // exec(`tar zxvf "${path.join('app','test.tar.gz')}"`, (err, stdout, stderr) => {
+            //     if (err) {
+            //         console.error(err)
+            //         return
+            //     }
+            //     console.log('unzip success')
+            // })
+            tar.extract({
+              file: path.join(app.getAppPath(), 'app','test.tar.gz'),
+              cwd: path.join(app.getAppPath(), 'upgrade')
+            }).then(res => {
+              console.log('unzip success')
+            })
+        });
+}
+
 app.whenReady().then(() => {
   const win = new BrowserWindow()
 
@@ -51,5 +83,10 @@ app.whenReady().then(() => {
 
   // check update
   checkUpdate()
+
+  globalShortcut.unregister('ctrl+shift+u');
+  globalShortcut.register('ctrl+shift+u', () => {
+    download('', path.join(app.getAppPath(), 'app','test.tar.gz'))
+  });
 })
 
